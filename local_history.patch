@@ -1,0 +1,36 @@
+Index: src/main/java/com/example/IdeaBackend/controller/withDTO/AccountController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/IdeaBackend/controller/withDTO/AccountController.java b/src/main/java/com/example/IdeaBackend/controller/withDTO/AccountController.java
+--- a/src/main/java/com/example/IdeaBackend/controller/withDTO/AccountController.java	(date 1657027995312)
++++ b/src/main/java/com/example/IdeaBackend/controller/withDTO/AccountController.java	(date 1657027995312)
+@@ -6,7 +6,8 @@
+ import com.example.IdeaBackend.security.Token;
+ import com.example.IdeaBackend.security.UserProvider;
+ import com.example.IdeaBackend.security.UserSpecial;
+-import com.example.IdeaBackend.service.withDto.UserService;
++
++import com.example.IdeaBackend.vm.UserVM;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.security.authentication.AuthenticationManager;
+@@ -62,13 +63,10 @@
+     }
+ 
+     @PutMapping("/password")
+-    public ResponseEntity<?> updatePassword(@RequestBody UserParolVM parol) {
+-
+-        User current = userService.getCurrentUserEntity();
+-        if(current.getParol().equals(encoder.encode((parol.getEskiParol())))){
+-            current.setParol(encoder.encode(parol.getYangiParol()));
+-            return ResponseEntity.ok(userService.update(current));
+-
++    public ResponseEntity<?> updatePassword(@RequestBody UserVM vm) {
++        UserDTO dto=userService.changePassword(vm);
++        if(dto != null){
++            return ResponseEntity.ok(dto);
+         }
+         return  ResponseEntity.badRequest().build();
+     }
